@@ -2,7 +2,7 @@ var express = require("express");
 var app = express();
 
 app.get("/", function(req, res) {
-  res.send("prometheus gateway");
+  res.send("Prometheus Metrics Gateway");
 });
 
 app.listen(3000, function() {
