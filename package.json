@@ -6,7 +6,7 @@
   "scripts": {
     "start": "nodemon src/index.js localhost 8080",
     "production": "node src/index.js",
-    "build": ""
+    "build": "echo build"
   },
   "dependencies": {
     "express": "4.17.1"
