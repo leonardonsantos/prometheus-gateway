@@ -12,7 +12,7 @@ app.get("/v1/counter/:metric/inc", function(req, res) {
     metric: req.params.metric,
     tags: {}
   };
-  for (var propName in req.query) {
+  for (let propName in req.query) {
     if (req.query.hasOwnProperty(propName)) {
       key.tags[propName] = req.query[propName];
     }
@@ -26,11 +26,31 @@ app.get("/v1/counter/:metric/inc", function(req, res) {
   } else {
     metrics[keyString] = 1;
   }
-  res.send(metrics);
+  res.send({ success: true });
 });
 
-// TODO: reponse for prometheus
+app.get("/v1/metrics/prometheus", function(req, res) {
+  // do not repeat same metrics
+  let uniqueMetrics = {};
+  for (let keyString in metrics) {
+    console.log(keyString);
+    let key = JSON.parse(keyString);
 
-app.listen(3000, function() {
-  console.log("Example app listening on port 3000!");
+    uniqueMetrics[key.metric] = 1;
+  }
+
+  let resultString = "";
+
+  for (let metric in uniqueMetrics) {
+    resultString += "# TYPE " + metric + " counter\n";
+  }
+
+  resultString += "\n";
+
+  res.type("text/plain");
+  res.send(resultString);
+});
+
+app.listen(8080, function() {
+  console.log("App listening on port 8080!");
 });
