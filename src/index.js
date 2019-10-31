@@ -9,11 +9,12 @@ app.get("/", function(req, res) {
 
 app.get("/v1/counter/:metric/inc", function(req, res) {
   let key = {
-    metric: req.params.metric
+    metric: req.params.metric,
+    tags: {}
   };
   for (var propName in req.query) {
     if (req.query.hasOwnProperty(propName)) {
-      key[propName] = req.query[propName];
+      key.tags[propName] = req.query[propName];
     }
   }
   let keyString = JSON.stringify(key);
