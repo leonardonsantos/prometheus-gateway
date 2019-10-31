@@ -4,7 +4,9 @@
   "description": "",
   "main": "src/index.js",
   "scripts": {
-    "start": "nodemon src/index.js localhost 8080"
+    "start": "nodemon src/index.js localhost 8080",
+    "production": "node src/index.js",
+    "build": ""
   },
   "dependencies": {
     "express": "4.17.1"
