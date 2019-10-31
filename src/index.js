@@ -33,7 +33,6 @@ app.get("/v1/metrics/prometheus", function(req, res) {
   // do not repeat same metrics
   let uniqueMetrics = {};
   for (let keyString in metrics) {
-    console.log(keyString);
     let key = JSON.parse(keyString);
 
     uniqueMetrics[key.metric] = 1;
@@ -46,6 +45,20 @@ app.get("/v1/metrics/prometheus", function(req, res) {
   }
 
   resultString += "\n";
+
+  // values for each tag set
+  for (let keyString in metrics) {
+    let key = JSON.parse(keyString);
+
+    let tags = [];
+    for (let tag in key.tags) {
+      tags.push("" + tag + "=" + key.tags[tag]);
+    }
+    let tagsString = tags.join(",");
+
+    resultString +=
+      "" + key.metric + "{" + tagsString + "} " + metrics[keyString] + "\n";
+  }
 
   res.type("text/plain");
   res.send(resultString);
